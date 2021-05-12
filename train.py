@@ -45,6 +45,8 @@ np.random.seed(args.seed)
 torch.manual_seed(args.seed)
 torch.cuda.manual_seed_all(args.seed)  # set random seed for all gpus
 
+IS_HOTELS = 'hotels' in args.dataset
+
 if not os.path.exists('results'):
     os.makedirs('results')
 if not os.path.exists('log'):
@@ -300,7 +302,7 @@ if args.mode == 'train':
         )
 
 criterion = config['criterion']['type'](
-    nb_classes=dl_tr.dataset.nb_classes(),
+    nb_classes=dl_tr.dataset.nb_classes(hotels=IS_HOTELS),
     sz_embed=args.sz_embedding,
     **config['criterion']['args']
 ).cuda()
@@ -426,8 +428,8 @@ def batch_lbl_stats(y):
 
 
 def get_centers(dl_tr):
-    c_centers = torch.zeros(dl_tr.dataset.nb_classes(), args.sz_embedding).cuda()
-    n_centers = torch.zeros(dl_tr.dataset.nb_classes()).cuda()
+    c_centers = torch.zeros(dl_tr.dataset.nb_classes(hotels=IS_HOTELS), args.sz_embedding).cuda()
+    n_centers = torch.zeros(dl_tr.dataset.nb_classes(hotels=IS_HOTELS)).cuda()
     for ct, (x, y, _) in enumerate(dl_tr):
         with torch.no_grad():
             m = model(x.cuda())

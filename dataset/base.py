@@ -67,8 +67,8 @@ class BaseDataset_hdf5(torch.utils.data.Dataset):
             elapsed = time.time() - c_time
             print('done copying file: %.2fs' % elapsed)
 
-    def nb_classes(self):
-        assert set(self.ys) == set(self.classes)
+    def nb_classes(self, hotels=False):
+        assert (set(self.ys) == set(self.classes)) or hotels
         return len(self.classes)
 
     def __len__(self):
