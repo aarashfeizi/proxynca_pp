@@ -14,7 +14,6 @@ import time
 import similarity
 
 # __repr__ may contain `\n`, json replaces it by `\\n` + indent
-from train import is_hotels
 
 json_dumps = lambda **kwargs: json.dumps(
     **kwargs
