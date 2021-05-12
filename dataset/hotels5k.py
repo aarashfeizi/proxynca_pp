@@ -3,7 +3,7 @@ import h5py
 import torch
 
 
-class CUBirds(BaseDatasetMod):
+class Hotels5k(BaseDatasetMod):
     def __init__(self, root, source, classes, transform=None):
         BaseDatasetMod.__init__(self, root, source, classes, transform)
         index = 0
@@ -20,7 +20,7 @@ class CUBirds(BaseDatasetMod):
                 index += 1
 
 
-class CUBirds_hdf5(BaseDataset_hdf5):
+class Hotels5k_hdf5(BaseDataset_hdf5):
     def __init__(self, root, source, classes, transform=None):
         BaseDataset_hdf5.__init__(self, root, source, classes, transform)
 
@@ -30,13 +30,12 @@ class CUBirds_hdf5(BaseDataset_hdf5):
         self.data_y.close()
         self.data_y = None
         for ix in range(len(self.all_labels)):
-            if self.all_labels[ix] in self.classes:
-                self.ys += [self.all_labels[ix].item()]
-                self.I += [ix]
-                index += 1
+            self.ys += [self.all_labels[ix].item()]
+            self.I += [ix]
+            index += 1
 
 
-class CUBirds_hdf5_alt(BaseDataset_hdf5_alt):
+class Hotels5k_hdf5_alt(BaseDataset_hdf5_alt):
     def __init__(self, root, source, classes, transform=None):
         BaseDataset_hdf5_alt.__init__(self, root, source, classes, transform)
 
@@ -52,7 +51,7 @@ class CUBirds_hdf5_alt(BaseDataset_hdf5_alt):
                 index += 1
 
 
-class CUBirds_hdf5_bb(BaseDataset_hdf5_bb):
+class Hotels5k_hdf5_bb(BaseDataset_hdf5_bb):
     def __init__(self, root, source, classes, transform=None):
         BaseDataset_hdf5_bb.__init__(self, root, source, classes, transform)
 
@@ -68,7 +67,7 @@ class CUBirds_hdf5_bb(BaseDataset_hdf5_bb):
                 index += 1
 
 
-class CUBirds_class(BaseDatasetMod):
+class Hotels5k_class(BaseDatasetMod):
     def __init__(self, root, source, classes, transform=None, mode='train'):
         BaseDatasetMod.__init__(self, root, source, classes, transform)
         index = 0

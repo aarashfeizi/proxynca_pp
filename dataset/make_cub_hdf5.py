@@ -4,7 +4,7 @@ import numpy as np
 from tqdm import tqdm
 import torchvision
 
-root = '/mnt/datasets/CUB_200_2011'
+root = '/home/ml/users/afeizi/datasets/CUB'
 
 img_count = 0
 for i in torchvision.datasets.ImageFolder(root = os.path.join(root, 'images')).imgs:

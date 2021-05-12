@@ -7,8 +7,8 @@
                 "trainval":"range(0,100)",
                 "eval": "range(100, 200)"
             },
-            "source": "str('/mnt/datasets/CUB_200_2011')",
-            "root":"str('/mnt/datasets/CUB_200_2011')"
+            "source": "str('/home/ml/users/afeizi/datasets/CUB')",
+            "root":"str('/home/ml/users/afeizi/datasets/CUB')"
         },
         "cub_h5": {
             "classes": {
@@ -17,8 +17,30 @@
                 "trainval":"range(0,100)",
                 "eval": "range(100, 200)"
             },
-            "source": "str('/mnt/datasets/CUB_200_2011/cub.h5')",
-            "root":"str('/mnt/datasets/CUB_200_2011/cub.h5')"
+            "source": "str('/home/ml/users/afeizi/datasets/CUB/cub.h5')",
+            "root":"str('/home/ml/users/afeizi/datasets/CUB/cub.h5')"
+        },
+        "hotels5k_h5": {
+            "classes": {
+                "train": "range(-1, -1)",
+                "val": "range(-1, -1)",
+                "trainval":"range(-1, -1)",
+                "eval": "range(-1, -1)"
+            },
+            "source_train": "str('/home/ml/users/afeizi/datasets/hotels50k_restructured_5000/hotels5k_train.h5')",
+            "root_train":"str('/home/ml/users/afeizi/datasets/hotels50k_restructured_5000/hotels5k_train.h5')",
+
+            "source_val_seen": "str('/home/ml/users/afeizi/datasets/hotels50k_restructured_5000/hotels5k_val_seen.h5')",
+            "root_val_seen":"str('/home/ml/users/afeizi/datasets/hotels50k_restructured_5000/hotels5k_val_seen.h5')",
+
+            "source_val_unseen": "str('/home/ml/users/afeizi/datasets/hotels50k_restructured_5000/hotels5k_val_unseen.h5')",
+            "root_val_unseen":"str('/home/ml/users/afeizi/datasets/hotels50k_restructured_5000/hotels5k_val_unseen.h5')",
+
+            "source_test_seen": "str('/home/ml/users/afeizi/datasets/hotels50k_restructured_5000/hotels5k_test_seen.h5')",
+            "root_test_seen":"str('/home/ml/users/afeizi/datasets/hotels50k_restructured_5000/hotels5k_test_seen.h5')",
+
+            "source_test_unseen": "str('/home/ml/users/afeizi/datasets/hotels50k_restructured_5000/hotels5k_test_unseen.h5')",
+            "root_test_unseen":"str('/home/ml/users/afeizi/datasets/hotels50k_restructured_5000/hotels5k_test_unseen.h5')"
         },
         "cars": {
             "classes": {
