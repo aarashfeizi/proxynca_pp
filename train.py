@@ -191,23 +191,40 @@ logging.basicConfig(
     ]
 )
 
-if args.mode == 'train':
-    tr_dataset = dataset.load(
-        name=args.dataset,
-        root=dataset_config['dataset'][args.dataset]['root'],
-        source=dataset_config['dataset'][args.dataset]['source'],
-        classes=dataset_config['dataset'][args.dataset]['classes']['train'],
-        transform=train_transform
-    )
-elif args.mode == 'trainval' or args.mode == 'test':
-    tr_dataset = dataset.load(
-        name=args.dataset,
-        root=dataset_config['dataset'][args.dataset]['root'],
-        source=dataset_config['dataset'][args.dataset]['source'],
-        classes=dataset_config['dataset'][args.dataset]['classes']['trainval'],
-        transform=train_transform
-    )
-
+if 'hotels5k' not in args.dataset:
+    if args.mode == 'train':
+        tr_dataset = dataset.load(
+            name=args.dataset,
+            root=dataset_config['dataset'][args.dataset]['root'],
+            source=dataset_config['dataset'][args.dataset]['source'],
+            classes=dataset_config['dataset'][args.dataset]['classes']['train'],
+            transform=train_transform
+        )
+    elif args.mode == 'trainval' or args.mode == 'test':
+        tr_dataset = dataset.load(
+            name=args.dataset,
+            root=dataset_config['dataset'][args.dataset]['root'],
+            source=dataset_config['dataset'][args.dataset]['source'],
+            classes=dataset_config['dataset'][args.dataset]['classes']['trainval'],
+            transform=train_transform
+        )
+else:
+    if args.mode == 'train':
+        tr_dataset = dataset.load(
+            name=args.dataset,
+            root=dataset_config['dataset'][args.dataset]['root_train'],
+            source=dataset_config['dataset'][args.dataset]['source_train'],
+            classes=dataset_config['dataset'][args.dataset]['classes']['train'],
+            transform=train_transform
+        )
+    elif args.mode == 'trainval' or args.mode == 'test':
+        tr_dataset = dataset.load(
+            name=args.dataset,
+            root=dataset_config['dataset'][args.dataset]['root_trainval'],
+            source=dataset_config['dataset'][args.dataset]['source_trainval'],
+            classes=dataset_config['dataset'][args.dataset]['classes']['trainval'],
+            transform=train_transform
+        )
 num_class_per_batch = config['num_class_per_batch']
 num_gradcum = config['num_gradcum']
 is_random_sampler = config['is_random_sampler']
@@ -228,23 +245,42 @@ dl_tr = torch.utils.data.DataLoader(
 
 print("===")
 if args.mode == 'train':
-    dl_val = torch.utils.data.DataLoader(
-        dataset.load(
-            name=args.dataset,
-            root=dataset_config['dataset'][args.dataset]['root'],
-            source=dataset_config['dataset'][args.dataset]['source'],
-            classes=dataset_config['dataset'][args.dataset]['classes']['val'],
-            transform=dataset.utils.make_transform(
-                **dataset_config[transform_key],
-                is_train=False
-            )
-        ),
-        batch_size=args.sz_batch,
-        shuffle=False,
-        num_workers=args.nb_workers,
-        # drop_last=True
-        # pin_memory = True
-    )
+    if 'hotels5k' not in args.dataset:
+        dl_val = torch.utils.data.DataLoader(
+            dataset.load(
+                name=args.dataset,
+                root=dataset_config['dataset'][args.dataset]['root'],
+                source=dataset_config['dataset'][args.dataset]['source'],
+                classes=dataset_config['dataset'][args.dataset]['classes']['val'],
+                transform=dataset.utils.make_transform(
+                    **dataset_config[transform_key],
+                    is_train=False
+                )
+            ),
+            batch_size=args.sz_batch,
+            shuffle=False,
+            num_workers=args.nb_workers,
+            # drop_last=True
+            # pin_memory = True
+        )
+    else:
+        dl_val = torch.utils.data.DataLoader(
+            dataset.load(
+                name=args.dataset,
+                root=dataset_config['dataset'][args.dataset]['root_val_seen'],
+                source=dataset_config['dataset'][args.dataset]['source_val_seen'],
+                classes=dataset_config['dataset'][args.dataset]['classes']['val'],
+                transform=dataset.utils.make_transform(
+                    **dataset_config[transform_key],
+                    is_train=False
+                )
+            ),
+            batch_size=args.sz_batch,
+            shuffle=False,
+            num_workers=args.nb_workers,
+            # drop_last=True
+            # pin_memory = True
+        )
 
 criterion = config['criterion']['type'](
     nb_classes=dl_tr.dataset.nb_classes(),
