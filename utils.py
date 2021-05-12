@@ -14,7 +14,7 @@ import time
 import similarity
 
 # __repr__ may contain `\n`, json replaces it by `\\n` + indent
-from train import IS_HOTELS
+from train import is_hotels
 
 json_dumps = lambda **kwargs: json.dumps(
     **kwargs
@@ -100,7 +100,7 @@ def predict_batchwise_inshop(model, dataloader):
 
 def evaluate(model, dataloader, eval_nmi=True, recall_list=[1,2,4,8]):
     eval_time = time.time()
-    nb_classes = dataloader.dataset.nb_classes(hotels=IS_HOTELS)
+    nb_classes = dataloader.dataset.nb_classes()
 
     # calculate embeddings with model and get targets
     X, T, *_ = predict_batchwise(model, dataloader)
@@ -154,7 +154,7 @@ def evaluate_inshop(model, dl_query, dl_gallery,
 
     
 
-    nb_classes = dl_query.dataset.nb_classes(hotels=IS_HOTELS)
+    nb_classes = dl_query.dataset.nb_classes()
 
     assert nb_classes == len(set(T_query))
     #assert nb_classes == len(T_query.unique())
