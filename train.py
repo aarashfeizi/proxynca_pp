@@ -9,7 +9,7 @@ import torch
 import numpy as np
 import matplotlib
 
-matplotlib.use('agg', warn=False, force=True)
+matplotlib.use('agg', force=True)
 import matplotlib.pyplot as plt
 import time
 import argparse
