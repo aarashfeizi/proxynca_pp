@@ -128,12 +128,29 @@ print('best_epoch', best_epoch)
 
 results = {}
 
-if ('inshop' not in args.dataset):
+if ('inshop' not in args.dataset) and ('hotels5k' not in args.dataset):
     dl_ev = torch.utils.data.DataLoader(
         dataset.load(
             name=args.dataset,
             root=dataset_config['dataset'][args.dataset]['root'],
             source=dataset_config['dataset'][args.dataset]['source'],
+            classes=dataset_config['dataset'][args.dataset]['classes']['eval'],
+            transform=dataset.utils.make_transform(
+                **dataset_config[transform_key],
+                is_train=False
+            )
+        ),
+        batch_size=args.sz_batch,
+        shuffle=False,
+        num_workers=args.nb_workers,
+        # pin_memory = True
+    )
+elif 'hotels5k' in args.dataset:
+    dl_ev = torch.utils.data.DataLoader(
+        dataset.load(
+            name=args.dataset,
+            root=dataset_config['dataset'][args.dataset]['root_test_unseen'],
+            source=dataset_config['dataset'][args.dataset]['source_test_unseen'],
             classes=dataset_config['dataset'][args.dataset]['classes']['eval'],
             transform=dataset.utils.make_transform(
                 **dataset_config[transform_key],
@@ -267,8 +284,8 @@ if args.mode == 'train':
         dl_val = torch.utils.data.DataLoader(
             dataset.load(
                 name=args.dataset,
-                root=dataset_config['dataset'][args.dataset]['root_val_seen'],
-                source=dataset_config['dataset'][args.dataset]['source_val_seen'],
+                root=dataset_config['dataset'][args.dataset]['root_val_unseen'],
+                source=dataset_config['dataset'][args.dataset]['source_val_unseen'],
                 classes=dataset_config['dataset'][args.dataset]['classes']['val'],
                 transform=dataset.utils.make_transform(
                     **dataset_config[transform_key],
