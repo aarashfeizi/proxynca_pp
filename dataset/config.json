@@ -30,6 +30,10 @@
             "source_train_small": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_train_small.h5')",
             "root_train_small":"str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_train_small.h5')",
 
+            "source_trainval_small": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_train_small.h5')",
+            "root_trainval_small":"str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_train_small.h5')",
+
+
             "source_val1_small": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_val1_small.h5')",
             "root_val1_small":"str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_val1_small.h5')",
 

@@ -69,6 +69,7 @@ parser.add_argument('--valset', default='val1_small', type=str)
 parser.add_argument('--lr_steps', default=[1000], nargs='+', type=int)
 parser.add_argument('--source_dir', default='', type=str)
 parser.add_argument('--root_dir', default='', type=str)
+parser.add_argument('--small_dataset', default=False, action='store_true')
 parser.add_argument('--eval_nmi', default=False, action='store_true')
 parser.add_argument('--recall', default=[1, 2, 4, 8], nargs='+', type=int)
 parser.add_argument('--init_eval', default=False, action='store_true')
@@ -258,19 +259,24 @@ if 'hotels5k' not in args.dataset:
             transform=train_transform
         )
 else:
+    if args.small_dataset:
+        to_add_to_name = '_small'
+    else:
+        to_add_to_name = ''
+
     if args.mode == 'train':
         tr_dataset = dataset.load(
             name=args.dataset,
-            root=dataset_config['dataset'][args.dataset]['root_train'],
-            source=dataset_config['dataset'][args.dataset]['source_train'],
+            root=dataset_config['dataset'][args.dataset]['root_train' + to_add_to_name],
+            source=dataset_config['dataset'][args.dataset]['source_train' + to_add_to_name],
             classes=dataset_config['dataset'][args.dataset]['classes']['train'],
             transform=train_transform
         )
     elif args.mode == 'trainval' or args.mode == 'test':
         tr_dataset = dataset.load(
             name=args.dataset,
-            root=dataset_config['dataset'][args.dataset]['root_trainval'],
-            source=dataset_config['dataset'][args.dataset]['source_trainval'],
+            root=dataset_config['dataset'][args.dataset]['root_trainval' + to_add_to_name],
+            source=dataset_config['dataset'][args.dataset]['source_trainval' + to_add_to_name],
             classes=dataset_config['dataset'][args.dataset]['classes']['trainval'],
             transform=train_transform
         )
