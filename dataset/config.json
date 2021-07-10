@@ -52,9 +52,7 @@
             "root_test3":"str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_test3_small.h5')",
 
             "source_test4": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_test4_small.h5')",
-            "root_test4":"str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_test4_small.h5')",
-
-
+            "root_test4":"str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_test4_small.h5')"
 
         },
         "cars": {
