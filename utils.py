@@ -103,7 +103,7 @@ def evaluate(model, dataloader, eval_nmi=True, recall_list=[1,2,4,8]):
 
     # calculate embeddings with model and get targets
     X, T, *_ = predict_batchwise(model, dataloader)
-    
+    output_str = ''
     print('done collecting prediction')
 
     #eval_time = time.time() - eval_time
@@ -121,6 +121,7 @@ def evaluate(model, dataloader, eval_nmi=True, recall_list=[1,2,4,8]):
         nmi = 1
 
     logging.info("NMI: {:.3f}".format(nmi * 100))
+    output_str += "NMI: {:.3f}\n".format(nmi * 100)
 
     # get predictions by assigning nearest 8 neighbors with euclidian
     max_dist = max(recall_list)
@@ -133,17 +134,20 @@ def evaluate(model, dataloader, eval_nmi=True, recall_list=[1,2,4,8]):
         r_at_k = evaluation.calc_recall_at_k(T, Y, k)
         recall.append(r_at_k)
         logging.info("R@{} : {:.3f}".format(k, 100 * r_at_k))
+        output_str += "R@{} : {:.3f}\n".format(k, 100 * r_at_k)
 
     chmean = (2*nmi*recall[0]) / (nmi + recall[0])
     logging.info("hmean: %s", str(chmean))
+    output_str += "hmean: %s\n", str(chmean)
 
     eval_time = time.time() - eval_time
     logging.info('Eval time: %.2f' % eval_time)
+
     return nmi, recall
 
 
-def evaluate_inshop(model, dl_query, dl_gallery,
-        K = [1, 10, 20, 30, 40, 50], with_nmi = False):
+def evaluate_qi(model, dl_query, dl_gallery,
+                K = [1, 10, 20, 30, 40, 50], with_nmi = False):
 
     # calculate embeddings with model and get targets
     X_query, T_query, *_ = predict_batchwise_inshop(

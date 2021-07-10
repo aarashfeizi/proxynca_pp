@@ -17,6 +17,42 @@ import json
 import random
 from utils import JSONEncoder, json_dumps
 
+
+def save_best_checkpoint(model):
+    torch.save(model.state_dict(), 'results/' + args.log_filename + '.pt')
+
+
+def load_best_checkpoint(model):
+    model.load_state_dict(torch.load('results/' + args.log_filename + '.pt'))
+    model = model.cuda()
+    return model
+
+
+def batch_lbl_stats(y):
+    print(torch.unique(y))
+    kk = torch.unique(y)
+    kk_c = torch.zeros(kk.size(0))
+    for kx in range(kk.size(0)):
+        for jx in range(y.size(0)):
+            if y[jx] == kk[kx]:
+                kk_c[kx] += 1
+
+
+def get_centers(dl_tr):
+    c_centers = torch.zeros(dl_tr.dataset.nb_classes(), args.sz_embedding).cuda()
+    n_centers = torch.zeros(dl_tr.dataset.nb_classes()).cuda()
+    for ct, (x, y, _) in enumerate(dl_tr):
+        with torch.no_grad():
+            m = model(x.cuda())
+        for ix in range(m.size(0)):
+            c_centers[y] += m[ix]
+            n_centers[y] += 1
+    for ix in range(n_centers.size(0)):
+        c_centers[ix] = c_centers[ix] / n_centers[ix]
+
+    return c_centers
+
+
 parser = argparse.ArgumentParser(description='Training ProxyNCA++')
 parser.add_argument('--dataset', default='cub')
 parser.add_argument('--config', default='config.json')
@@ -28,6 +64,8 @@ parser.add_argument('--workers', default=16, type=int, dest='nb_workers')
 parser.add_argument('--seed', default=0, type=int)
 parser.add_argument('--mode', default='train', choices=['train', 'trainval', 'test'],
                     help='train with train data or train with trainval')
+parser.add_argument('--testset', default='test1_small', type=str)
+parser.add_argument('--valset', default='val1_small', type=str)
 parser.add_argument('--lr_steps', default=[1000], nargs='+', type=int)
 parser.add_argument('--source_dir', default='', type=str)
 parser.add_argument('--root_dir', default='', type=str)
@@ -44,8 +82,6 @@ random.seed(args.seed)
 np.random.seed(args.seed)
 torch.manual_seed(args.seed)
 torch.cuda.manual_seed_all(args.seed)  # set random seed for all gpus
-
-
 
 if not os.path.exists('results'):
     os.makedirs('results')
@@ -87,7 +123,9 @@ transform_key = 'transform_parameters'
 if 'transform_key' in config.keys():
     transform_key = config['transform_key']
 
+
 args.log_filename = '%s_%s_%s_%d' % (args.dataset, curr_fn, args.mode, args.seed)
+
 if args.mode == 'test':
     args.log_filename = args.log_filename.replace('test', 'trainval')
 
@@ -103,17 +141,6 @@ model = torch.nn.Sequential(feat, emb)
 if not args.apex:
     model = torch.nn.DataParallel(model)
 model = model.cuda()
-
-
-def save_best_checkpoint(model):
-    torch.save(model.state_dict(), 'results/' + args.log_filename + '.pt')
-
-
-def load_best_checkpoint(model):
-    model.load_state_dict(torch.load('results/' + args.log_filename + '.pt'))
-    model = model.cuda()
-    return model
-
 
 if args.mode == 'trainval':
     train_results_fn = "log/%s_%s_%s_%d.json" % (args.dataset, curr_fn, 'train', args.seed)
@@ -151,8 +178,8 @@ elif 'hotels5k' in args.dataset:
     dl_ev = torch.utils.data.DataLoader(
         dataset.load(
             name=args.dataset,
-            root=dataset_config['dataset'][args.dataset]['root_test_unseen'],
-            source=dataset_config['dataset'][args.dataset]['source_test_unseen'],
+            root=dataset_config['dataset'][args.dataset][f'root_{args.testset}'],
+            source=dataset_config['dataset'][args.dataset][f'source_{args.testset}'],
             classes=dataset_config['dataset'][args.dataset]['classes']['eval'],
             transform=dataset.utils.make_transform(
                 **dataset_config[transform_key],
@@ -200,6 +227,9 @@ else:
         num_workers=args.nb_workers,
         # pin_memory = True
     )
+
+    import pdb
+    pdb.set_trace()
 
 logging.basicConfig(
     format="%(asctime)s %(message)s",
@@ -263,43 +293,43 @@ dl_tr = torch.utils.data.DataLoader(
 )
 
 print("===")
-if args.mode == 'train':
-    if 'hotels5k' not in args.dataset:
-        dl_val = torch.utils.data.DataLoader(
-            dataset.load(
-                name=args.dataset,
-                root=dataset_config['dataset'][args.dataset]['root'],
-                source=dataset_config['dataset'][args.dataset]['source'],
-                classes=dataset_config['dataset'][args.dataset]['classes']['val'],
-                transform=dataset.utils.make_transform(
-                    **dataset_config[transform_key],
-                    is_train=False
-                )
-            ),
-            batch_size=args.sz_batch,
-            shuffle=False,
-            num_workers=args.nb_workers,
-            # drop_last=True
-            # pin_memory = True
-        )
-    else:
-        dl_val = torch.utils.data.DataLoader(
-            dataset.load(
-                name=args.dataset,
-                root=dataset_config['dataset'][args.dataset]['root_val_unseen'],
-                source=dataset_config['dataset'][args.dataset]['source_val_unseen'],
-                classes=dataset_config['dataset'][args.dataset]['classes']['val'],
-                transform=dataset.utils.make_transform(
-                    **dataset_config[transform_key],
-                    is_train=False
-                )
-            ),
-            batch_size=args.sz_batch,
-            shuffle=False,
-            num_workers=args.nb_workers,
-            # drop_last=True
-            # pin_memory = True
-        )
+# if args.mode == 'train':
+if 'hotels5k' not in args.dataset:
+    dl_val = torch.utils.data.DataLoader(
+        dataset.load(
+            name=args.dataset,
+            root=dataset_config['dataset'][args.dataset]['root'],
+            source=dataset_config['dataset'][args.dataset]['source'],
+            classes=dataset_config['dataset'][args.dataset]['classes']['val'],
+            transform=dataset.utils.make_transform(
+                **dataset_config[transform_key],
+                is_train=False
+            )
+        ),
+        batch_size=args.sz_batch,
+        shuffle=False,
+        num_workers=args.nb_workers,
+        # drop_last=True
+        # pin_memory = True
+    )
+else:
+    dl_val = torch.utils.data.DataLoader(
+        dataset.load(
+            name=args.dataset,
+            root=dataset_config['dataset'][args.dataset][f'root_{args.valset}'],
+            source=dataset_config['dataset'][args.dataset][f'source_{args.valset}'],
+            classes=dataset_config['dataset'][args.dataset]['classes']['val'],
+            transform=dataset.utils.make_transform(
+                **dataset_config[transform_key],
+                is_train=False
+            )
+        ),
+        batch_size=args.sz_batch,
+        shuffle=False,
+        num_workers=args.nb_workers,
+        # drop_last=True
+        # pin_memory = True
+    )
 
 criterion = config['criterion']['type'](
     nb_classes=dl_tr.dataset.nb_classes(),
@@ -367,9 +397,21 @@ if args.mode == 'test':
         logging.info("**Evaluating...(test mode)**")
         model = load_best_checkpoint(model)
         if 'inshop' in args.dataset:
-            utils.evaluate_inshop(model, dl_query, dl_gallery)
+            utils.evaluate_qi(model, dl_query, dl_gallery)
         else:
-            utils.evaluate(model, dl_ev, args.eval_nmi, args.recall)
+            val_nmi, val_recall = utils.evaluate(model, dl_val, args.eval_nmi, args.recall)
+            test_nmi, test_recall = utils.evaluate(model, dl_ev, args.eval_nmi, args.recall)
+            result_str = '*' * 50
+            result_str += '\n'
+            result_str += f'{args.valset} nmi: {val_nmi}\n'
+            result_str += f'{args.valset} recall at {args.recall}: {val_recall}\n'
+            result_str += '*' * 50
+            result_str += f'{args.testset} nmi: {test_nmi}\n'
+            result_str += f'{args.testset} recall at {args.recall}: {test_recall}\n'
+
+            with open('results/' + args.log_filename + f'_results_{args.dataset}_{args.valset}_{args.testset}.txt', 'w') as f:
+                f.write(result_str)
+
 
     exit()
 
@@ -415,32 +457,6 @@ best_test_r2 = 0
 best_test_r5 = 0
 best_test_r8 = 0
 best_tnmi = 0
-
-
-def batch_lbl_stats(y):
-    print(torch.unique(y))
-    kk = torch.unique(y)
-    kk_c = torch.zeros(kk.size(0))
-    for kx in range(kk.size(0)):
-        for jx in range(y.size(0)):
-            if y[jx] == kk[kx]:
-                kk_c[kx] += 1
-
-
-def get_centers(dl_tr):
-    c_centers = torch.zeros(dl_tr.dataset.nb_classes(), args.sz_embedding).cuda()
-    n_centers = torch.zeros(dl_tr.dataset.nb_classes()).cuda()
-    for ct, (x, y, _) in enumerate(dl_tr):
-        with torch.no_grad():
-            m = model(x.cuda())
-        for ix in range(m.size(0)):
-            c_centers[y] += m[ix]
-            n_centers[y] += 1
-    for ix in range(n_centers.size(0)):
-        c_centers[ix] = c_centers[ix] / n_centers[ix]
-
-    return c_centers
-
 
 prev_lr = opt.param_groups[0]['lr']
 lr_steps = []
@@ -574,7 +590,7 @@ if args.mode == 'trainval':
         model = load_best_checkpoint(model)
         if 'inshop' in args.dataset:
             best_test_nmi, (best_test_r1, best_test_r10, best_test_r20, best_test_r30, best_test_r40,
-                            best_test_r50) = utils.evaluate_inshop(model, dl_query, dl_gallery)
+                            best_test_r50) = utils.evaluate_qi(model, dl_query, dl_gallery)
         else:
             best_test_nmi, (best_test_r1, best_test_r2, best_test_r4, best_test_r8) = utils.evaluate(model, dl_ev,
                                                                                                      args.eval_nmi,
