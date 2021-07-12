@@ -488,8 +488,8 @@ if not args.no_warmup:
         logging.info('warm up ends in %d epochs' % (args.warmup_k - e))
 
 from tqdm import tqdm
-
-for e in range(0, args.nb_epochs):
+print('total epochs:', args.nb_epochs)
+for e in range(1, args.nb_epochs + 1):
     # if args.mode == 'trainval':
     #    scheduler.step(e)
 
@@ -524,9 +524,9 @@ for e in range(0, args.nb_epochs):
 
             losses_per_epoch.append(loss.data.cpu().numpy())
 
-            if (ct + 1) % 1 == 0:
-                opt.step()
-                opt.zero_grad()
+            # if (ct + 1) % 1 == 0:
+            opt.step()
+            opt.zero_grad()
 
             t.update()
 
