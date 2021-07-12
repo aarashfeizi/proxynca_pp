@@ -19,6 +19,7 @@ from utils import JSONEncoder, json_dumps
 
 
 def save_best_checkpoint(model):
+    print(f'saving to results/' + args.log_filename + '.pt')
     torch.save(model.state_dict(), 'results/' + args.log_filename + '.pt')
 
 
@@ -486,6 +487,8 @@ if not args.no_warmup:
             opt_warmup.step()
         logging.info('warm up ends in %d epochs' % (args.warmup_k - e))
 
+from tqdm import tqdm
+
 for e in range(0, args.nb_epochs):
     # if args.mode == 'trainval':
     #    scheduler.step(e)
@@ -502,27 +505,30 @@ for e in range(0, args.nb_epochs):
     tnmi = []
 
     opt.zero_grad()
-    for ct, (x, y, _) in enumerate(dl_tr):
-        it += 1
+    with tqdm(total=len(dl_tr), desc=f'Epoch {e}/{args.nb_epochs}') as t:
+        for ct, (x, y, _) in enumerate(dl_tr):
+            it += 1
 
-        m = model(x.cuda())
+            m = model(x.cuda())
 
-        loss1 = criterion(m, y.cuda())
-        loss = loss1
+            loss1 = criterion(m, y.cuda())
+            loss = loss1
 
-        if args.apex:
-            with amp.scale_loss(loss, opt) as scaled_loss:
-                scaled_loss.backward()
-        else:
-            loss.backward()
+            if args.apex:
+                with amp.scale_loss(loss, opt) as scaled_loss:
+                    scaled_loss.backward()
+            else:
+                loss.backward()
 
-        torch.nn.utils.clip_grad_value_(model.parameters(), 10)
+            torch.nn.utils.clip_grad_value_(model.parameters(), 10)
 
-        losses_per_epoch.append(loss.data.cpu().numpy())
+            losses_per_epoch.append(loss.data.cpu().numpy())
 
-        if (ct + 1) % 1 == 0:
-            opt.step()
-            opt.zero_grad()
+            if (ct + 1) % 1 == 0:
+                opt.step()
+                opt.zero_grad()
+
+        t.update()
 
     time_per_epoch_2 = time.time()
     losses.append(np.mean(losses_per_epoch[-20:]))
@@ -590,6 +596,7 @@ for e in range(0, args.nb_epochs):
 
 if args.mode == 'trainval':
     save_best_checkpoint(model)
+    print('Model saved!!')
 
     with torch.no_grad():
         logging.info("**Evaluating...**")
