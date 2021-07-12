@@ -528,7 +528,7 @@ for e in range(0, args.nb_epochs):
                 opt.step()
                 opt.zero_grad()
 
-        t.update()
+            t.update()
 
     time_per_epoch_2 = time.time()
     losses.append(np.mean(losses_per_epoch[-20:]))
