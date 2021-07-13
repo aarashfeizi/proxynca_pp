@@ -15,8 +15,14 @@ import time
 import argparse
 import json
 import random
+import h5py
 from utils import JSONEncoder, json_dumps
 
+def load_h5(data_description, path):
+     data = None
+     with h5py.File(path, 'r') as hf:
+         data = hf[data_description][:]
+     return data
 
 def save_best_checkpoint(model):
     print(f'saving to results/' + args.log_filename + '.pt')
@@ -77,6 +83,8 @@ parser.add_argument('--init_eval', default=False, action='store_true')
 parser.add_argument('--no_warmup', default=False, action='store_true')
 parser.add_argument('--apex', default=False, action='store_true')
 parser.add_argument('--warmup_k', default=5, type=int)
+parser.add_argument('--x_path', default='', type=str)
+parser.add_argument('--t_path', default='', type=str)
 
 args = parser.parse_args()
 
@@ -399,15 +407,24 @@ if args.apex:
     [model, criterion], [opt, opt_warmup] = amp.initialize([model, criterion], [opt, opt_warmup], opt_level='O1')
     model = torch.nn.DataParallel(model)
 
+if args.x_path != '':
+    feats = load_h5(f'cub_eval_val_feats', args.x_path)
+    labels = load_h5(f'cub_eval_val_classes', args.t_path)
+else:
+    feats, labels = None, None
+
 if args.mode == 'test':
     with torch.no_grad():
         logging.info("**Evaluating...(test mode)**")
-        model = load_best_checkpoint(model)
+        if feats is None:
+            model = load_best_checkpoint(model)
+        else:
+            model = None
         if 'inshop' in args.dataset:
             utils.evaluate_qi(model, dl_query, dl_gallery)
         else:
-            val_nmi, val_recall = utils.evaluate(model, dl_val, args.eval_nmi, args.recall)
-            test_nmi, test_recall = utils.evaluate(model, dl_ev, args.eval_nmi, args.recall)
+            val_nmi, val_recall = utils.evaluate(model, dl_val, args.eval_nmi, args.recall, x=feats, t=labels)
+            test_nmi, test_recall = utils.evaluate(model, dl_ev, args.eval_nmi, args.recall, x=feats, t=labels)
             result_str = '*' * 50
             result_str += '\n'
             result_str += f'{args.valset} nmi: {val_nmi}\n'

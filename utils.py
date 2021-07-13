@@ -97,12 +97,17 @@ def predict_batchwise_inshop(model, dataloader):
     model.train(model_is_training) # revert to previous training state
     return result
 
-def evaluate(model, dataloader, eval_nmi=True, recall_list=[1,2,4,8]):
+def evaluate(model, dataloader, eval_nmi=True, recall_list=[1,2,4,8], x=None, t=None):
     eval_time = time.time()
     nb_classes = dataloader.dataset.nb_classes()
 
     # calculate embeddings with model and get targets
-    X, T, *_ = predict_batchwise(model, dataloader)
+    if x is None:
+        X, T, *_ = predict_batchwise(model, dataloader)
+    else:
+        print('USING GIVEN X AND T, NOT CALCULATING!!!!!!!!!!!!!!!!!!!!!!!!')
+        X = x
+        T = t
     output_str = ''
     print('done collecting prediction')
 
