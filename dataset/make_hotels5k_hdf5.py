@@ -4,9 +4,11 @@ import numpy as np
 from tqdm import tqdm
 import torchvision
 
-root = '/home/ml/users/afeizi/datasets/hotels50k_restructured_5000'
+# root = '/home/ml/users/afeizi/datasets/hotels50k_restructured_5000'
+root = '/home/ml/users/afeizi/datasets/hotels50k_v5_restructured'
 
-splits = ['train', 'val_seen', 'val_unseen', 'test_seen', 'test_unseen']
+# splits = ['train', 'val_seen', 'val_unseen', 'test_seen', 'test_unseen']
+splits = ['train', 'val1', 'val2', 'val3', 'val4', 'test1', 'test2', 'test3', 'test4' ]
 for s in splits:
     img_count = 0
     for i in torchvision.datasets.ImageFolder(root=os.path.join(root, s)).imgs:

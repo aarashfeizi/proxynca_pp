@@ -152,7 +152,7 @@ def evaluate(model, dataloader, eval_nmi=True, recall_list=[1,2,4,8], x=None, t=
 
     chmean = (2*nmi*recall[0]) / (nmi + recall[0])
     logging.info("hmean: %s", str(chmean))
-    output_str += "hmean: %s\n", str(chmean)
+    # output_str += "hmean: %s\n", str(chmean)
 
     eval_time = time.time() - eval_time
     logging.info('Eval time: %.2f' % eval_time)
