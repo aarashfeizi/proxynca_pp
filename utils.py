@@ -97,7 +97,7 @@ def predict_batchwise_inshop(model, dataloader):
     model.train(model_is_training) # revert to previous training state
     return result
 
-def evaluate(model, dataloader, eval_nmi=True, recall_list=[1,2,4,8], x=None, t=None):
+def evaluate(model, dataloader, eval_nmi=True, recall_list=[1,2,4,8], x=None, t=None, save_name=''):
     eval_time = time.time()
     nb_classes = dataloader.dataset.nb_classes()
 
@@ -108,6 +108,15 @@ def evaluate(model, dataloader, eval_nmi=True, recall_list=[1,2,4,8], x=None, t=
         print('USING GIVEN X AND T, NOT CALCULATING!!!!!!!!!!!!!!!!!!!!!!!!')
         X = x
         T = t
+
+    if save_name != '':
+        import pickle
+        with open(f'X_{save_name}.pkl', 'wb') as f:
+            pickle.dump(X, f)
+
+        with open(f'T_{save_name}.pkl', 'wb') as f:
+            pickle.dump(T, f)
+
     output_str = ''
     print('done collecting prediction')
 

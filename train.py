@@ -423,8 +423,8 @@ if args.mode == 'test':
         if 'inshop' in args.dataset:
             utils.evaluate_qi(model, dl_query, dl_gallery)
         else:
-            val_nmi, val_recall = utils.evaluate(model, dl_val, args.eval_nmi, args.recall, x=feats, t=labels)
-            test_nmi, test_recall = utils.evaluate(model, dl_ev, args.eval_nmi, args.recall, x=feats, t=labels)
+            val_nmi, val_recall = utils.evaluate(model, dl_val, args.eval_nmi, args.recall, x=feats, t=labels, save_name=f'val_{args.dataset}_{args.valset}')
+            test_nmi, test_recall = utils.evaluate(model, dl_ev, args.eval_nmi, args.recall, x=feats, t=labels, save_name=f'test_{args.dataset}_{args.testset}')
             result_str = '*' * 50
             result_str += '\n'
             result_str += f'{args.valset} nmi: {val_nmi}\n'
