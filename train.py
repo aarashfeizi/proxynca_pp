@@ -86,6 +86,8 @@ parser.add_argument('--warmup_k', default=5, type=int)
 parser.add_argument('--x_path', default='', type=str)
 parser.add_argument('--t_path', default='', type=str)
 
+parser.add_argument('--xname', default='', type=str)
+
 args = parser.parse_args()
 
 random.seed(args.seed)
@@ -100,7 +102,7 @@ if not os.path.exists('log'):
 
 curr_fn = os.path.basename(args.config).split(".")[0]
 
-out_results_fn = "log/%s_%s_%s_%d.json" % (args.dataset, curr_fn, args.mode, args.seed)
+out_results_fn = "log/%s_%s_%s_%s_%d.json" % (args.dataset, curr_fn, args.mode, args.xname, args.seed)
 
 config = utils.load_config(args.config)
 
@@ -134,7 +136,7 @@ if 'transform_key' in config.keys():
     transform_key = config['transform_key']
 
 
-args.log_filename = '%s_%s_%s_%d' % (args.dataset, curr_fn, args.mode, args.seed)
+args.log_filename = '%s_%s_%s_%s_%d' % (args.dataset, curr_fn, args.mode, args.xname, args.seed)
 
 if args.mode == 'test':
     args.log_filename = args.log_filename.replace('test', 'trainval')
@@ -153,7 +155,7 @@ if not args.apex:
 model = model.cuda()
 
 if args.mode == 'trainval':
-    train_results_fn = "log/%s_%s_%s_%d.json" % (args.dataset, curr_fn, 'train', args.seed)
+    train_results_fn = "log/%s_%s_%s_%s_%d.json" % (args.dataset, curr_fn, 'train', args.xname, args.seed)
     if os.path.exists(train_results_fn):
         with open(train_results_fn, 'r') as f:
             train_results = json.load(f)
