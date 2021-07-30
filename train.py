@@ -535,7 +535,7 @@ for e in range(1, args.nb_epochs + 1):
             loss = loss1
             loss_total += loss.item()
 
-            t.set_postfix(loss=(loss_total / ct + 1))
+            t.set_postfix(loss=(loss_total / (ct + 1)))
 
             if args.apex:
                 with amp.scale_loss(loss, opt) as scaled_loss:
