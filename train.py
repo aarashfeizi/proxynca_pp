@@ -102,7 +102,6 @@ if not os.path.exists('log'):
 
 curr_fn = os.path.basename(args.config).split(".")[0]
 
-out_results_fn = "log/%s_%s_%s_%s_%d.json" % (args.dataset, curr_fn, args.mode, args.xname, args.seed)
 
 config = utils.load_config(args.config)
 
@@ -135,8 +134,8 @@ transform_key = 'transform_parameters'
 if 'transform_key' in config.keys():
     transform_key = config['transform_key']
 
-
-args.log_filename = '%s_%s_%s_%s_%d' % (args.dataset, curr_fn, args.mode, args.xname, args.seed)
+out_results_fn = 'log/%s_%s_%s_%s_%d_%d_nc%d_%f_%f' % (args.dataset, curr_fn, args.mode, args.xname, args.sz_embedding, args.sz_batch, config['num_class_per_batch'], config['opt']['base']['lr'], config['opt']['proxynca']['lr'])
+args.log_filename = '%s_%s_%s_%s_%d_%d_nc%d_%f_%f' % (args.dataset, curr_fn, args.mode, args.xname, args.sz_embedding, args.sz_batch, config['num_class_per_batch'], config['opt']['base']['lr'], config['opt']['proxynca']['lr'])
 
 if args.mode == 'test':
     args.log_filename = args.log_filename.replace('test', 'trainval')
@@ -155,7 +154,7 @@ if not args.apex:
 model = model.cuda()
 
 if args.mode == 'trainval':
-    train_results_fn = "log/%s_%s_%s_%s_%d.json" % (args.dataset, curr_fn, 'train', args.xname, args.seed)
+    train_results_fn = 'log/%s_%s_%s_%s_%d_%d_nc%d_%f_%f' % (args.dataset, curr_fn, 'train', args.xname, args.sz_embedding, args.sz_batch, config['num_class_per_batch'], config['opt']['base']['lr'], config['opt']['proxynca']['lr'])
     if os.path.exists(train_results_fn):
         with open(train_results_fn, 'r') as f:
             train_results = json.load(f)
