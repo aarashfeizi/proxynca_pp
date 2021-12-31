@@ -134,8 +134,8 @@ transform_key = 'transform_parameters'
 if 'transform_key' in config.keys():
     transform_key = config['transform_key']
 
-out_results_fn = 'log/%s_%s_%s_%s_%d_%d_nc%d_%f_%f' % (args.dataset, curr_fn, args.mode, args.xname, args.sz_embedding, args.sz_batch, config['num_class_per_batch'], config['opt']['base']['lr'], config['opt']['proxynca']['lr'])
-args.log_filename = '%s_%s_%s_%s_%d_%d_nc%d_%f_%f' % (args.dataset, curr_fn, args.mode, args.xname, args.sz_embedding, args.sz_batch, config['num_class_per_batch'], config['opt']['base']['lr'], config['opt']['proxynca']['lr'])
+out_results_fn = 'log/%s_%s_%s_%s_%d_%d_nc%d_%f_%f' % (args.dataset, curr_fn, args.mode, args.xname, args.sz_embedding, args.sz_batch, config['num_class_per_batch'], config['opt']['args']['base']['lr'], config['opt']['args']['proxynca']['lr'])
+args.log_filename = '%s_%s_%s_%s_%d_%d_nc%d_%f_%f' % (args.dataset, curr_fn, args.mode, args.xname, args.sz_embedding, args.sz_batch, config['num_class_per_batch'], config['opt']['args']['base']['lr'], config['opt']['args']['proxynca']['lr'])
 
 if args.mode == 'test':
     args.log_filename = args.log_filename.replace('test', 'trainval')
@@ -154,7 +154,7 @@ if not args.apex:
 model = model.cuda()
 
 if args.mode == 'trainval':
-    train_results_fn = 'log/%s_%s_%s_%s_%d_%d_nc%d_%f_%f' % (args.dataset, curr_fn, 'train', args.xname, args.sz_embedding, args.sz_batch, config['num_class_per_batch'], config['opt']['base']['lr'], config['opt']['proxynca']['lr'])
+    train_results_fn = 'log/%s_%s_%s_%s_%d_%d_nc%d_%f_%f' % (args.dataset, curr_fn, 'train', args.xname, args.sz_embedding, args.sz_batch, config['num_class_per_batch'], config['opt']['args']['base']['lr'], config['opt']['args']['proxynca']['lr'])
     if os.path.exists(train_results_fn):
         with open(train_results_fn, 'r') as f:
             train_results = json.load(f)
