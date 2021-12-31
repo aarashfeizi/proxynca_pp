@@ -78,7 +78,7 @@ parser.add_argument('--source_dir', default='', type=str)
 parser.add_argument('--root_dir', default='', type=str)
 parser.add_argument('--small_dataset', default=False, action='store_true')
 parser.add_argument('--eval_nmi', default=False, action='store_true')
-parser.add_argument('--recall', default=[1, 2, 4, 8], nargs='+', type=int)
+parser.add_argument('--recall', default=[1, 2, 4, 8, 16, 32], nargs='+', type=int)
 parser.add_argument('--init_eval', default=False, action='store_true')
 parser.add_argument('--no_warmup', default=False, action='store_true')
 parser.add_argument('--apex', default=False, action='store_true')
@@ -115,8 +115,8 @@ if args.root_dir != '':
     bs_name = os.path.basename(dataset_config['dataset'][args.dataset]['root'])
     dataset_config['dataset'][args.dataset]['root'] = os.path.join(args.root_dir, bs_name)
 
-if args.apex:
-    from apex import amp
+# if args.apex:
+#     from apex import amp
 
 # set NMI or recall accordingly depending on dataset. note for cub and cars R=1,2,4,8
 if (args.mode == 'trainval' or args.mode == 'test'):
@@ -405,9 +405,9 @@ opt = config['opt']['type'](
     **config['opt']['args']['base']
 )
 
-if args.apex:
-    [model, criterion], [opt, opt_warmup] = amp.initialize([model, criterion], [opt, opt_warmup], opt_level='O1')
-    model = torch.nn.DataParallel(model)
+# if args.apex:
+#     [model, criterion], [opt, opt_warmup] = amp.initialize([model, criterion], [opt, opt_warmup], opt_level='O1')
+#     model = torch.nn.DataParallel(model)
 
 if args.x_path != '':
     feats = load_h5(f'cub_eval_val_feats', args.x_path)
@@ -497,11 +497,11 @@ if not args.no_warmup:
             opt_warmup.zero_grad()
             m = model(x.cuda())
             loss = criterion(m, y.cuda())
-            if args.apex:
-                with amp.scale_loss(loss, opt_warmup) as scaled_loss:
-                    scaled_loss.backward()
-            else:
-                loss.backward()
+            # if args.apex:
+            #     with amp.scale_loss(loss, opt_warmup) as scaled_loss:
+            #         scaled_loss.backward()
+            # else:
+            loss.backward()
             torch.nn.utils.clip_grad_value_(model.parameters(), 10)
             opt_warmup.step()
         logging.info('warm up ends in %d epochs' % (args.warmup_k - e))
@@ -512,7 +512,7 @@ for e in range(1, args.nb_epochs + 1):
     # if args.mode == 'trainval':
     #    scheduler.step(e)
 
-    if args.mode == 'train':
+    if args.mode == 'train' or args.mode == 'trainval':
         curr_lr = opt.param_groups[0]['lr']
         print(prev_lr, curr_lr)
         if curr_lr != prev_lr:
@@ -537,11 +537,11 @@ for e in range(1, args.nb_epochs + 1):
 
             t.set_postfix(loss=(loss_total / (ct + 1)))
 
-            if args.apex:
-                with amp.scale_loss(loss, opt) as scaled_loss:
-                    scaled_loss.backward()
-            else:
-                loss.backward()
+            # if args.apex:
+            #     with amp.scale_loss(loss, opt) as scaled_loss:
+            #         scaled_loss.backward()
+            # else:
+            loss.backward()
 
             torch.nn.utils.clip_grad_value_(model.parameters(), 10)
 
@@ -571,14 +571,17 @@ for e in range(1, args.nb_epochs + 1):
     if e == best_epoch:
         break
 
-    if args.mode == 'train':
+    if args.mode == 'train' or args.mode == 'trainval':
         with torch.no_grad():
             logging.info("**Validation...**")
             nmi, recall = utils.evaluate(model, dl_val, args.eval_nmi, args.recall)
 
         chmean = (2 * nmi * recall[0]) / (nmi + recall[0])
 
-        scheduler.step(chmean)
+        if args.mode == 'trainval':
+            scheduler.step(e)
+        else:
+            scheduler.step(chmean)
 
         if chmean > best_val_hmean:
             best_val_hmean = chmean
@@ -589,6 +592,9 @@ for e in range(1, args.nb_epochs + 1):
             best_val_r8 = recall[3]
             best_val_epoch = e
             best_tnmi = torch.Tensor(tnmi).mean()
+
+            save_best_checkpoint(model)
+            print('Model saved!!')
 
         if e == (args.nb_epochs - 1):
             # saving last epoch
@@ -614,12 +620,8 @@ for e in range(1, args.nb_epochs + 1):
         logging.info('Best val r1: %s', str(best_val_r1))
         logging.info(str(lr_steps))
 
-    if args.mode == 'trainval':
-        scheduler.step(e)
 
 if args.mode == 'trainval':
-    save_best_checkpoint(model)
-    print('Model saved!!')
 
     with torch.no_grad():
         logging.info("**Evaluating...**")
