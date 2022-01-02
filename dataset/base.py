@@ -70,7 +70,7 @@ class BaseDataset_hdf5(torch.utils.data.Dataset):
     def nb_classes(self):
         hotels = 'hotels' in self.root
         assert (set(self.ys) == set(self.classes)) or hotels
-        return len(self.ys)
+        return len(set(self.ys))
 
     def __len__(self):
         return len(self.ys)
