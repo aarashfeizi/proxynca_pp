@@ -653,7 +653,7 @@ if args.mode == 'trainval':
             best_test_nmi, (best_test_r1, best_test_r10, best_test_r20, best_test_r30, best_test_r40,
                             best_test_r50) = utils.evaluate_qi(model, dl_query, dl_gallery)
         else:
-            best_test_nmi, (best_test_r1, best_test_r2, best_test_r4, best_test_r8) = utils.evaluate(model, dl_ev,
+            best_test_nmi, (best_test_r1, best_test_r2, best_test_r4, best_test_r8, best_test_r16, best_test_r32) = utils.evaluate(model, dl_ev,
                                                                                                      args.eval_nmi,
                                                                                                      args.recall)
         # logging.info('Best test r8: %s', str(best_test_r8))
@@ -671,6 +671,8 @@ if args.mode == 'trainval':
         results['R2'] = best_test_r2
         results['R4'] = best_test_r4
         results['R8'] = best_test_r8
+        results['R16'] = best_test_r4
+        results['R32'] = best_test_r8
 
 if args.mode == 'train':
     print('lr_steps', lr_steps)
