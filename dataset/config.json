@@ -117,16 +117,17 @@
                 "val": "range(1998, 3997)",
                 "trainval": "range(0, 3997)",
                 "eval": "range(0, 3985)"
-               
+
             }
         }
     },
      "transform_parameters": {
-        "rgb_to_bgr": "False", 
+        "rgb_to_bgr": "False",
         "intensity_scale": "[[0, 1], [0, 1]]",
-        "mean": "[0.485, 0.456, 0.406]",
-        "std": "[0.229, 0.224, 0.225]",
-        "sz_crop": "256",
-        "sz_resize": "288"
+        "mean": "[0.5805, 0.5247, 0.4683]",
+        "std": "[0.2508, 0.2580, 0.2701]",
+        "sz_crop": "224",
+        "sz_resize": "256"
     }
 }
+
