@@ -2,6 +2,10 @@
 from __future__ import print_function
 from __future__ import division
 
+import copy
+
+from sklearn.metrics.pairwise import cosine_similarity
+
 import evaluation
 import numpy as np
 import torch
@@ -60,6 +64,8 @@ def predict_batchwise(model, dataloader):
                     J = J.to(list(model.parameters())[0].device)
                     # predict model output for image
                     J = model(J).cpu()
+
+
                 for j in J:
                     #if i == 1: print(j)
                     A[i].append(j)
@@ -157,7 +163,11 @@ def evaluate(model, dataloader, eval_nmi=True, recall_list=[1,2,4,8], x=None, t=
     eval_time = time.time() - eval_time
     logging.info('Eval time: %.2f' % eval_time)
 
-    return nmi, recall
+    auroc = calc_auroc(X, T)
+    logging.info("AUROC: {:.3f}".format(auroc * 100))
+    # output_str += "AUROC: {:.3f}\n".format(auroc * 100)
+
+    return nmi, recall, auroc
 
 
 def evaluate_qi(model, dl_query, dl_gallery,
@@ -209,4 +219,61 @@ def evaluate_qi(model, dl_query, dl_gallery,
 
     return nmi, recall
 
+
+def make_batch_bce_labels(labels):
+    """
+    :param labels: e.g. tensor of size (N,1)
+    :return: binary matrix of labels of size (N, N)
+    """
+
+    l_ = labels.repeat(len(labels)).reshape(-1, len(labels))
+    l__ = labels.repeat_interleave(len(labels)).reshape(-1, len(labels))
+
+    final_bce_labels = (l_ == l__).type(torch.float32)
+
+    # final_bce_labels.fill_diagonal_(0)
+
+    return final_bce_labels
+
+def get_samples(l, k):
+    if len(l) < k:
+        to_ret = np.random.choice(l, k, replace=True)
+    else:
+        to_ret = np.random.choice(l, k, replace=False)
+
+    return to_ret
+
+def get_xs_ys(bce_labels, k=1):
+    """
+
+    :param bce_labels: tensor of (N, N) with 0s and 1s
+    :param k: number of pos and neg samples per anch
+    :return:
+
+    """
+    xs = []
+    ys = []
+    bce_labels_copy = copy.deepcopy(bce_labels)
+    bce_labels_copy.fill_diagonal_(-1)
+    for i, row in enumerate(bce_labels_copy):
+        neg_idx = torch.where(row == 0)[0]
+        pos_idx = torch.where(row == 1)[0]
+
+        ys.extend(get_samples(neg_idx, k))
+        ys.extend(get_samples(pos_idx, k))
+        xs.extend(get_samples([i], 2 * k))
+
+    return xs, ys
+
+def calc_auroc(embeddings, labels):
+    from sklearn.metrics import roc_auc_score
+    bce_labels = make_batch_bce_labels(labels)
+    similarities = cosine_similarity(embeddings)
+
+    xs, ys = get_xs_ys(bce_labels, k=1)
+
+    true_labels = bce_labels[xs, ys]
+    predicted_labels = similarities[xs, ys]
+
+    return roc_auc_score(true_labels, predicted_labels)
 

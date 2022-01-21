@@ -448,15 +448,17 @@ if args.mode == 'test':
         if 'inshop' in args.dataset:
             utils.evaluate_qi(model, dl_query, dl_gallery)
         else:
-            val_nmi, val_recall = utils.evaluate(model, dl_val, args.eval_nmi, args.recall, x=feats, t=labels, save_name=f'val_{args.dataset}_{args.valset}')
-            test_nmi, test_recall = utils.evaluate(model, dl_ev, args.eval_nmi, args.recall, x=feats, t=labels, save_name=f'test_{args.dataset}_{args.testset}')
+            val_nmi, val_recall, val_auroc = utils.evaluate(model, dl_val, args.eval_nmi, args.recall, x=feats, t=labels, save_name=f'val_{args.dataset}_{args.valset}')
+            test_nmi, test_recall, test_auroc = utils.evaluate(model, dl_ev, args.eval_nmi, args.recall, x=feats, t=labels, save_name=f'test_{args.dataset}_{args.testset}')
             result_str = '*' * 50
             result_str += '\n'
             result_str += f'{args.valset} nmi: {val_nmi}\n'
             result_str += f'{args.valset} recall at {args.recall}: {val_recall}\n'
+            result_str += f'{args.valset} AUROC: {val_auroc}\n'
             result_str += '*' * 50
             result_str += f'{args.testset} nmi: {test_nmi}\n'
             result_str += f'{args.testset} recall at {args.recall}: {test_recall}\n'
+            result_str += f'{args.testset} AUROC: {test_auroc}\n'
 
             with open('results/' + args.log_filename + f'_results_{args.dataset}_{args.valset}_{args.testset}.txt', 'w') as f:
                 f.write(result_str)
@@ -498,9 +500,11 @@ it = 0
 
 best_val_hmean = 0
 best_val_nmi = 0
+best_val_auroc = 0
 best_val_epoch = 0
 best_val_r1 = 0
 best_test_nmi = 0
+best_test_auroc = 0
 best_test_r1 = 0
 best_test_r2 = 0
 best_test_r5 = 0
@@ -597,7 +601,7 @@ for e in range(1, args.nb_epochs + 1):
     if args.mode == 'train' or args.mode == 'trainval':
         with torch.no_grad():
             logging.info("**Validation...**")
-            nmi, recall = utils.evaluate(model, dl_val, args.eval_nmi, args.recall)
+            nmi, recall, auroc = utils.evaluate(model, dl_val, args.eval_nmi, args.recall)
 
         chmean = (2 * nmi * recall[0]) / (nmi + recall[0])
 
@@ -613,6 +617,7 @@ for e in range(1, args.nb_epochs + 1):
             best_val_r2 = recall[1]
             best_val_r4 = recall[2]
             best_val_r8 = recall[3]
+            best_val_auroc = auroc
             best_val_epoch = e
             best_tnmi = torch.Tensor(tnmi).mean()
 
@@ -623,6 +628,7 @@ for e in range(1, args.nb_epochs + 1):
             # saving last epoch
             results['last_NMI'] = nmi
             results['last_hmean'] = chmean
+            results['last_auroc'] = auroc
             results['best_epoch'] = best_val_epoch
             results['last_R1'] = recall[0]
             results['last_R2'] = recall[1]
@@ -632,6 +638,7 @@ for e in range(1, args.nb_epochs + 1):
             # saving best epoch
             results['best_NMI'] = best_val_nmi
             results['best_hmean'] = best_val_hmean
+            results['best_auroc'] = best_val_auroc
             results['best_R1'] = best_val_r1
             results['best_R2'] = best_val_r2
             results['best_R4'] = best_val_r4
@@ -653,12 +660,13 @@ if args.mode == 'trainval':
             best_test_nmi, (best_test_r1, best_test_r10, best_test_r20, best_test_r30, best_test_r40,
                             best_test_r50) = utils.evaluate_qi(model, dl_query, dl_gallery)
         else:
-            best_test_nmi, (best_test_r1, best_test_r2, best_test_r4, best_test_r8, best_test_r16, best_test_r32) = utils.evaluate(model, dl_ev,
+            best_test_nmi, (best_test_r1, best_test_r2, best_test_r4, best_test_r8, best_test_r16, best_test_r32), best_test_auroc = utils.evaluate(model, dl_ev,
                                                                                                      args.eval_nmi,
                                                                                                      args.recall)
         # logging.info('Best test r8: %s', str(best_test_r8))
     if 'inshop' in args.dataset:
         results['NMI'] = best_test_nmi
+        results['auroc'] = best_test_auroc
         results['R1'] = best_test_r1
         results['R10'] = best_test_r10
         results['R20'] = best_test_r20
@@ -667,6 +675,7 @@ if args.mode == 'trainval':
         results['R50'] = best_test_r50
     else:
         results['NMI'] = best_test_nmi
+        results['auroc'] = best_test_auroc
         results['R1'] = best_test_r1
         results['R2'] = best_test_r2
         results['R4'] = best_test_r4
