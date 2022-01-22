@@ -610,7 +610,8 @@ for e in range(1, args.nb_epochs + 1):
         else:
             scheduler.step(chmean)
 
-        if chmean > best_val_hmean:
+        # if chmean > best_val_hmean:
+        if auroc > best_val_auroc:
             best_val_hmean = chmean
             best_val_nmi = nmi
             best_val_r1 = recall[0]
@@ -648,6 +649,7 @@ for e in range(1, args.nb_epochs + 1):
         logging.info('Best val hmean: %s', str(best_val_hmean))
         logging.info('Best val nmi: %s', str(best_val_nmi))
         logging.info('Best val r1: %s', str(best_val_r1))
+        logging.info('Best val auroc: %s', str(best_val_auroc))
         logging.info(str(lr_steps))
 
 
