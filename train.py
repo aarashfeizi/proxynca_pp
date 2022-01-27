@@ -71,8 +71,8 @@ parser.add_argument('--workers', default=16, type=int, dest='nb_workers')
 parser.add_argument('--seed', default=0, type=int)
 parser.add_argument('--mode', default='train', choices=['train', 'trainval', 'test'],
                     help='train with train data or train with trainval')
-parser.add_argument('--testset', default='test1_small', type=str)
-parser.add_argument('--valset', default='val1_small', type=str)
+parser.add_argument('--testset', default='test1', type=str)
+parser.add_argument('--valset', default='val1', type=str)
 parser.add_argument('--lr_steps', default=[1000], nargs='+', type=int)
 parser.add_argument('--source_dir', default='', type=str)
 parser.add_argument('--root_dir', default='', type=str)
@@ -210,11 +210,16 @@ if ('inshop' not in args.dataset) and ('hotels5k' not in args.dataset):
         # pin_memory = True
     )
 elif 'hotels5k' in args.dataset:
+    if args.small_dataset:
+        to_add_to_name = '_small'
+    else:
+        to_add_to_name = ''
+
     dl_ev = torch.utils.data.DataLoader(
         dataset.load(
             name=args.dataset,
-            root=dataset_config['dataset'][args.dataset][f'root_{args.testset}'],
-            source=dataset_config['dataset'][args.dataset][f'source_{args.testset}'],
+            root=dataset_config['dataset'][args.dataset][f'root_{args.testset + to_add_to_name}'],
+            source=dataset_config['dataset'][args.dataset][f'source_{args.testset + to_add_to_name}'],
             classes=dataset_config['dataset'][args.dataset]['classes']['eval'],
             transform=dataset.utils.make_transform(
                 **dataset_config[transform_key],
@@ -353,11 +358,16 @@ if 'hotels5k' not in args.dataset:
         # pin_memory = True
     )
 else:
+    if args.small_dataset:
+        to_add_to_name = '_small'
+    else:
+        to_add_to_name = ''
+
     dl_val = torch.utils.data.DataLoader(
         dataset.load(
             name=args.dataset,
-            root=dataset_config['dataset'][args.dataset][f'root_{args.valset}'],
-            source=dataset_config['dataset'][args.dataset][f'source_{args.valset}'],
+            root=dataset_config['dataset'][args.dataset][f'root_{args.valset + to_add_to_name}'],
+            source=dataset_config['dataset'][args.dataset][f'source_{args.valset + to_add_to_name}'],
             classes=dataset_config['dataset'][args.dataset]['classes']['val'],
             transform=dataset.utils.make_transform(
                 **dataset_config[transform_key],
