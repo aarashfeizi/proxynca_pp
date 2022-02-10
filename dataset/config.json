@@ -1,163 +1,167 @@
 {
-    "dataset": {
-        "cub": {
-            "classes": {
-                "train": "range(0, 50)",
-                "val": "range(50,100)",
-                "trainval":"range(0,100)",
-                "eval": "range(100, 200)"
-            },
-            "source": "str('/home/ml/users/afeizi/datasets/CUB')",
-            "root":"str('/home/ml/users/afeizi/datasets/CUB')"
-        },
-        "cub_h5": {
-            "classes": {
-                "train": "range(0, 50)",
-                "val": "range(50,100)",
-                "trainval":"range(0,100)",
-                "eval": "range(100, 200)"
-            },
-            "source": "str('/home/ml/users/afeizi/datasets/CUB/cub.h5')",
-            "root":"str('/home/ml/users/afeizi/datasets/CUB/cub.h5')"
-        },
-        "hotels5k_h5": {
-            "classes": {
-                "train": "range(-1, -1)",
-                "val": "range(-1, -1)",
-                "trainval":"range(-1, -1)",
-                "eval": "range(-1, -1)"
-            },
-
-            "source_train": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_train.h5')",
-            "root_train":"str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_train.h5')",
-
-            "source_trainval": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_train.h5')",
-            "root_trainval":"str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_train.h5')",
-
-            "source_val1": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_val1.h5')",
-            "root_val1":"str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_val1.h5')",
-
-            "source_val2": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_val2.h5')",
-            "root_val2":"str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_val2.h5')",
-
-            "source_val3": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_val3.h5')",
-            "root_val3":"str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_val3.h5')",
-
-            "source_val4": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_val4.h5')",
-            "root_val4":"str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_val4.h5')",
-
-            "source_test1": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_test1.h5')",
-            "root_test1":"str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_test1.h5')",
-
-            "source_test2": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_test2.h5')",
-            "root_test2":"str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_test2.h5')",
-
-            "source_test3": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_test3.h5')",
-            "root_test3":"str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_test3.h5')",
-
-            "source_test4": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_test4.h5')",
-            "root_test4":"str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_test4.h5')",
-
-            "source_train_small": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_train_small.h5')",
-            "root_train_small":"str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_train_small.h5')",
-
-            "source_trainval_small": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_train_small.h5')",
-            "root_trainval_small":"str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_train_small.h5')",
-
-            "source_val1_small": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_val1_small.h5')",
-            "root_val1_small":"str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_val1_small.h5')",
-
-            "source_val2_small": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_val2_small.h5')",
-            "root_val2_small":"str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_val2_small.h5')",
-
-            "source_val3_small": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_val3_small.h5')",
-            "root_val3_small":"str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_val3_small.h5')",
-
-            "source_val4_small": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_val4_small.h5')",
-            "root_val4_small":"str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_val4_small.h5')",
-
-            "source_test1_small": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_test1_small.h5')",
-            "root_test1_small":"str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_test1_small.h5')",
-
-            "source_test2_small": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_test2_small.h5')",
-            "root_test2_small":"str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_test2_small.h5')",
-
-            "source_test3_small": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_test3_small.h5')",
-            "root_test3_small":"str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_test3_small.h5')",
-
-            "source_test4_small": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_test4_small.h5')",
-            "root_test4_small":"str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_test4_small.h5')"
-
-        },
-        "cars": {
-            "classes": {
-                "train": "range(0, 49)",
-                "val": "range(49,98)",
-                "trainval": "range(0, 98)",
-                "eval": "range(98, 196)"
-            },
-            "source": "str('/mnt/datasets/cars196_alt')",
-            "root": "str('/mnt/datasets/cars196_alt')"
-        },
-        "cars_h5": {
-            "classes": {
-                "train": "range(0, 49)",
-                "val": "range(49,98)",
-                "trainval": "range(0, 98)",
-                "eval": "range(98, 196)"
-            },
-            "source": "str('/mnt/datasets/cars196_alt/cars.h5')",
-            "root": "str('/mnt/datasets/cars196_alt/cars.h5')"
-        },
-        "sop": {
-            "source": "str('/mnt/datasets/sop')",
-            "root": "str('/mnt/datasets/sop')",
-            "classes": {
-                "train": "range(0, 5659)",
-                "val": "range(5659, 11318)",
-                "trainval": "range(0, 11318)",
-                "eval": "range(11318, 22634)"
-            }
-        },
-        "sop_h5": {
-            "classes": {
-                "train": "range(0, 5659)",
-                "val": "range(5659,11318)",
-                "trainval": "range(0, 11318)",
-                "eval": "range(11318, 22634)"
-            },
-            "source": "str('/mnt/datasets/sop/sop.h5')",
-            "root": "str('/mnt/datasets//sop/sop.h5')"
-        },
-        "inshop": {
-            "source": "str('/mnt/datasets/inshop')",
-            "root": "str('/mnt/datasets/inshop')",
-            "classes": {
-                "train": "range(0, 1998)",
-                "val": "range(1998, 3997)",
-                "trainval": "range(0, 3997)",
-                "eval": "range(0, 3985)"
-            }
-        },
-        "inshop_h5": {
-            "source": "str('/mnt/datasets/inshop/inshop.h5')",
-            "root": "str('/mnt/datasets/inshop/inshop.h5')",
-            "classes": {
-                "train": "range(0, 1998)",
-                "val": "range(1998, 3997)",
-                "trainval": "range(0, 3997)",
-                "eval": "range(0, 3985)"
-
-            }
-        }
+  "dataset": {
+    "cub": {
+      "classes": {
+        "train": "range(0, 50)",
+        "val": "range(50,100)",
+        "trainval": "range(0,100)",
+        "eval": "range(100, 200)"
+      },
+      "source": "str('/home/ml/users/afeizi/datasets/CUB')",
+      "root": "str('/home/ml/users/afeizi/datasets/CUB')"
     },
-     "transform_parameters": {
-        "rgb_to_bgr": "False",
-        "intensity_scale": "[[0, 1], [0, 1]]",
-        "mean": "[0.5805, 0.5247, 0.4683]",
-        "std": "[0.2508, 0.2580, 0.2701]",
-        "sz_crop": "224",
-        "sz_resize": "256"
+    "cub_h5": {
+      "classes": {
+        "train": "range(0, 50)",
+        "val": "range(50,100)",
+        "trainval": "range(0,100)",
+        "eval": "range(100, 200)"
+      },
+      "source": "str('/home/ml/users/afeizi/datasets/CUB/cub.h5')",
+      "root": "str('/home/ml/users/afeizi/datasets/CUB/cub.h5')"
+    },
+    "hotels5k_h5": {
+      "classes": {
+        "train": "range(-1, -1)",
+        "val": "range(-1, -1)",
+        "trainval": "range(-1, -1)",
+        "eval": "range(-1, -1)"
+      },
+      "source_train": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_train.h5')",
+      "root_train": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_train.h5')",
+      "source_trainval": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_train.h5')",
+      "root_trainval": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_train.h5')",
+      "source_val1": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_val1.h5')",
+      "root_val1": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_val1.h5')",
+      "source_val2": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_val2.h5')",
+      "root_val2": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_val2.h5')",
+      "source_val3": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_val3.h5')",
+      "root_val3": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_val3.h5')",
+      "source_val4": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_val4.h5')",
+      "root_val4": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_val4.h5')",
+      "source_test1": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_test1.h5')",
+      "root_test1": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_test1.h5')",
+      "source_test2": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_test2.h5')",
+      "root_test2": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_test2.h5')",
+      "source_test3": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_test3.h5')",
+      "root_test3": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_test3.h5')",
+      "source_test4": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_test4.h5')",
+      "root_test4": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_test4.h5')",
+      "source_train_small": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_train_small.h5')",
+      "root_train_small": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_train_small.h5')",
+      "source_trainval_small": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_train_small.h5')",
+      "root_trainval_small": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_train_small.h5')",
+      "source_val1_small": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_val1_small.h5')",
+      "root_val1_small": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_val1_small.h5')",
+      "source_val2_small": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_val2_small.h5')",
+      "root_val2_small": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_val2_small.h5')",
+      "source_val3_small": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_val3_small.h5')",
+      "root_val3_small": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_val3_small.h5')",
+      "source_val4_small": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_val4_small.h5')",
+      "root_val4_small": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_val4_small.h5')",
+      "source_test1_small": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_test1_small.h5')",
+      "root_test1_small": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_test1_small.h5')",
+      "source_test2_small": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_test2_small.h5')",
+      "root_test2_small": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_test2_small.h5')",
+      "source_test3_small": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_test3_small.h5')",
+      "root_test3_small": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_test3_small.h5')",
+      "source_test4_small": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_test4_small.h5')",
+      "root_test4_small": "str('/home/ml/users/afeizi/datasets/hotels50k_v5_restructured/hotels5k_test4_small.h5')"
+    },
+    "hotelid_h5": {
+      "classes": {
+        "train": "range(-1, -1)",
+        "val": "range(-1, -1)",
+        "trainval": "range(-1, -1)",
+        "eval": "range(-1, -1)"
+      },
+      "source_train": "str('/home/ml/users/afeizi/datasets/hotelid-2021_restructured/hotels5k_train.h5')",
+      "root_train": "str('/home/ml/users/afeizi/datasets/hotelid-2021_restructured/hotels5k_train.h5')",
+      "source_trainval": "str('/home/ml/users/afeizi/datasets/hotelid-2021_restructured/hotels5k_trainval.h5')",
+      "root_trainval": "str('/home/ml/users/afeizi/datasets/hotelid-2021_restructured/hotels5k_trainval.h5')",
+      "source_val1": "str('/home/ml/users/afeizi/datasets/hotelid-2021_restructured/hotels5k_val1.h5')",
+      "root_val1": "str('/home/ml/users/afeizi/datasets/hotelid-2021_restructured/hotels5k_val1.h5')",
+      "source_val2": "str('/home/ml/users/afeizi/datasets/hotelid-2021_restructured/hotels5k_val2.h5')",
+      "root_val2": "str('/home/ml/users/afeizi/datasets/hotelid-2021_restructured/hotels5k_val2.h5')",
+      "source_val3": "str('/home/ml/users/afeizi/datasets/hotelid-2021_restructured/hotels5k_val3.h5')",
+      "root_val3": "str('/home/ml/users/afeizi/datasets/hotelid-2021_restructured/hotels5k_val3.h5')",
+      "source_test1": "str('/home/ml/users/afeizi/datasets/hotelid-2021_restructured/hotels5k_test1.h5')",
+      "root_test1": "str('/home/ml/users/afeizi/datasets/hotelid-2021_restructured/hotels5k_test1.h5')",
+      "source_test2": "str('/home/ml/users/afeizi/datasets/hotelid-2021_restructured/hotels5k_test2.h5')",
+      "root_test2": "str('/home/ml/users/afeizi/datasets/hotelid-2021_restructured/hotels5k_test2.h5')",
+      "source_test3": "str('/home/ml/users/afeizi/datasets/hotelid-2021_restructured/hotels5k_test3.h5')",
+      "root_test3": "str('/home/ml/users/afeizi/datasets/hotelid-2021_restructured/hotels5k_test3.h5')",
+      "source_test4": "str('/home/ml/users/afeizi/datasets/hotelid-2021_restructured/hotels5k_test4.h5')",
+      "root_test4": "str('/home/ml/users/afeizi/datasets/hotelid-2021_restructured/hotels5k_test4.h5')"
+    },
+    "cars": {
+      "classes": {
+        "train": "range(0, 49)",
+        "val": "range(49,98)",
+        "trainval": "range(0, 98)",
+        "eval": "range(98, 196)"
+      },
+      "source": "str('/mnt/datasets/cars196_alt')",
+      "root": "str('/mnt/datasets/cars196_alt')"
+    },
+    "cars_h5": {
+      "classes": {
+        "train": "range(0, 49)",
+        "val": "range(49,98)",
+        "trainval": "range(0, 98)",
+        "eval": "range(98, 196)"
+      },
+      "source": "str('/mnt/datasets/cars196_alt/cars.h5')",
+      "root": "str('/mnt/datasets/cars196_alt/cars.h5')"
+    },
+    "sop": {
+      "source": "str('/mnt/datasets/sop')",
+      "root": "str('/mnt/datasets/sop')",
+      "classes": {
+        "train": "range(0, 5659)",
+        "val": "range(5659, 11318)",
+        "trainval": "range(0, 11318)",
+        "eval": "range(11318, 22634)"
+      }
+    },
+    "sop_h5": {
+      "classes": {
+        "train": "range(0, 5659)",
+        "val": "range(5659,11318)",
+        "trainval": "range(0, 11318)",
+        "eval": "range(11318, 22634)"
+      },
+      "source": "str('/mnt/datasets/sop/sop.h5')",
+      "root": "str('/mnt/datasets//sop/sop.h5')"
+    },
+    "inshop": {
+      "source": "str('/mnt/datasets/inshop')",
+      "root": "str('/mnt/datasets/inshop')",
+      "classes": {
+        "train": "range(0, 1998)",
+        "val": "range(1998, 3997)",
+        "trainval": "range(0, 3997)",
+        "eval": "range(0, 3985)"
+      }
+    },
+    "inshop_h5": {
+      "source": "str('/mnt/datasets/inshop/inshop.h5')",
+      "root": "str('/mnt/datasets/inshop/inshop.h5')",
+      "classes": {
+        "train": "range(0, 1998)",
+        "val": "range(1998, 3997)",
+        "trainval": "range(0, 3997)",
+        "eval": "range(0, 3985)"
+      }
     }
+  },
+  "transform_parameters": {
+    "rgb_to_bgr": "False",
+    "intensity_scale": "[[0, 1], [0, 1]]",
+    "mean": "[0.5805, 0.5247, 0.4683]",
+    "std": "[0.2508, 0.2580, 0.2701]",
+    "sz_crop": "224",
+    "sz_resize": "256"
+  }
 }
 

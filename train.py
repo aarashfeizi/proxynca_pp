@@ -192,7 +192,7 @@ print('best_epoch', best_epoch)
 
 results = {}
 
-if ('inshop' not in args.dataset) and ('hotels5k' not in args.dataset):
+if ('inshop' not in args.dataset) and ('hotel' not in args.dataset):
     dl_ev = torch.utils.data.DataLoader(
         dataset.load(
             name=args.dataset,
@@ -209,7 +209,7 @@ if ('inshop' not in args.dataset) and ('hotels5k' not in args.dataset):
         num_workers=args.nb_workers,
         # pin_memory = True
     )
-elif 'hotels5k' in args.dataset:
+elif 'hotel' in args.dataset:
     if args.small_dataset:
         to_add_to_name = '_small'
     else:
@@ -280,7 +280,7 @@ logging.basicConfig(
     ]
 )
 
-if 'hotels5k' not in args.dataset:
+if 'hotel' not in args.dataset:
     if args.mode == 'train':
         tr_dataset = dataset.load(
             name=args.dataset,
@@ -339,7 +339,7 @@ dl_tr = torch.utils.data.DataLoader(
 
 print("===")
 # if args.mode == 'train':
-if 'hotels5k' not in args.dataset:
+if 'hotel' not in args.dataset:
     dl_val = torch.utils.data.DataLoader(
         dataset.load(
             name=args.dataset,

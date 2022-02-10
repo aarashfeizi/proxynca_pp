@@ -1,6 +1,7 @@
 from .cars import Cars, Cars_hdf5
 from .cub import CUBirds, CUBirds_hdf5, CUBirds_class, CUBirds_hdf5_alt, CUBirds_hdf5_bb
 from .hotels5k import Hotels5k, Hotels5k_hdf5, Hotels5k_class
+from .hotelid import HotelsID, HotelsID_hdf5, HotelsID_class
 from .sop import SOProducts, SOProducts_hdf5
 from .inshop import InShop, InShop_hdf5
 from . import utils
@@ -25,6 +26,9 @@ _type = {
     'hotels5k': Hotels5k,
     'hotels5k_h5': Hotels5k_hdf5,
     'hotels5k_class': Hotels5k_class,
+    'hotelid': HotelsID,
+    'hotelid_h5': HotelsID_hdf5,
+    'hotelid_class': HotelsID_class,
 }
 
 
