@@ -134,24 +134,33 @@ transform_key = 'transform_parameters'
 if 'transform_key' in config.keys():
     transform_key = config['transform_key']
 
-out_results_fn = 'log/%s_%s_%s_%s_%d_bs%d_nc%d_baseLR%f_pncaLR%f' % (args.dataset,
-                                                       curr_fn,
-                                                       args.mode,
-                                                       args.xname,
-                                                       args.sz_embedding,
-                                                       args.sz_batch,
-                                                       config['num_class_per_batch'],
-                                                       round(config['opt']['args']['base']['lr'], 10),
-                                                       round(config['opt']['args']['proxynca']['lr'], 10))
-args.log_filename = '%s_%s_%s_%s_%d_bs%d_nc%d_baseLR%f_pncaLR%f' % (args.dataset,
-                                                                    curr_fn,
-                                                                    args.mode,
-                                                                    args.xname,
-                                                                    args.sz_embedding,
-                                                                    args.sz_batch,
-                                                                    config['num_class_per_batch'],
-                                                                    round(config['opt']['args']['base']['lr'], 10),
-                                                                    round(config['opt']['args']['proxynca']['lr'], 10))
+if args.xname != '':
+    xname = args.xname + '_'
+else:
+    xname = ''
+
+out_results_fn = f'log/res_{args.dataset}_{curr_fn}_{args.mode}_{xname}{args.nb_epochs}ep_{args.sz_embedding}_bs{args.sz_batch}_nc{config["num_class_per_batch"]}_baseLR{config["opt"]["args"]["base"]["lr"]}_pncaLR{config["opt"]["args"]["proxynca"]["lr"]}.txt'
+
+args.log_filename = f'log/{args.dataset}_{curr_fn}_{args.mode}_{xname}{args.nb_epochs}ep_{args.sz_embedding}_bs{args.sz_batch}_nc{config["num_class_per_batch"]}_baseLR{config["opt"]["args"]["base"]["lr"]}_pncaLR{config["opt"]["args"]["proxynca"]["lr"]}'
+
+# out_results_fn = f'log/{args.dataset}_{curr_fn}_{args.mode}_{args.xname}_{args.sz_embedding}_bs{args.sz_batch}_nc{config["num_class_per_batch"]}_baseLR{config["opt"]["args"]["base"]["lr"]}_pncaLR{config["opt"]["args"]["proxynca"]["lr"]}.txt' % (,
+#                                                        curr_fn,
+#                                                        args.mode,
+#                                                        args.xname,
+#                                                        args.sz_embedding,
+#                                                        args.sz_batch,
+#                                                        config['num_class_per_batch'],
+#                                                        round(config['opt']['args']['base']['lr'], 10),
+#                                                        round(config['opt']['args']['proxynca']['lr'], 10))
+# args.log_filename = '%s_%s_%s_%s_%d_bs%d_nc%d_baseLR%f_pncaLR%f' % (args.dataset,
+#                                                                     curr_fn,
+#                                                                     args.mode,
+#                                                                     args.xname,
+#                                                                     args.sz_embedding,
+#                                                                     args.sz_batch,
+#                                                                     config['num_class_per_batch'],
+#                                                                     round(config['opt']['args']['base']['lr'], 10),
+#                                                                     round(config['opt']['args']['proxynca']['lr'], 10))
 
 if args.mode == 'test':
     args.log_filename = args.log_filename.replace('test', 'trainval')
@@ -170,15 +179,16 @@ if not args.apex:
 model = model.cuda()
 
 if args.mode == 'trainval':
-    train_results_fn = 'log/%s_%s_%s_%s_%d_bs%d_nc%d_baseLR%f_pncaLR%f' % (args.dataset,
-                                                                           curr_fn,
-                                                                           'train',
-                                                                           args.xname,
-                                                                           args.sz_embedding,
-                                                                           args.sz_batch,
-                                                                           config['num_class_per_batch'],
-                                                                           round(config['opt']['args']['base']['lr'], 10),
-                                                                           round(config['opt']['args']['proxynca']['lr'], 10))
+    train_results_fn = f'log/res_{args.dataset}_{curr_fn}_train_{xname}{args.nb_epochs}ep_{args.sz_embedding}_bs{args.sz_batch}_nc{config["num_class_per_batch"]}_baseLR{config["opt"]["args"]["base"]["lr"]}_pncaLR{config["opt"]["args"]["proxynca"]["lr"]}.txt'
+    # train_results_fn = 'log/%s_%s_%s_%s_%d_bs%d_nc%d_baseLR%f_pncaLR%f' % (args.dataset,
+    #                                                                        curr_fn,
+    #                                                                        '',
+    #                                                                        args.xname,
+    #                                                                        args.sz_embedding,
+    #                                                                        args.sz_batch,
+    #                                                                        config['num_class_per_batch'],
+    #                                                                        round(config['opt']['args']['base']['lr'], 10),
+    #                                                                        round(config['opt']['args']['proxynca']['lr'], 10))
     if os.path.exists(train_results_fn):
         with open(train_results_fn, 'r') as f:
             train_results = json.load(f)
