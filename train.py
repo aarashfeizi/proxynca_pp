@@ -509,7 +509,7 @@ t1 = time.time()
 if args.init_eval:
     logging.info("**Evaluating initial model...**")
     with torch.no_grad():
-        if args.mode == 'train':
+        if args.mode == 'train' or args.mode == 'trainval':
             c_dl = dl_val
         else:
             c_dl = dl_ev
@@ -682,9 +682,13 @@ if args.mode == 'trainval':
             best_test_nmi, (best_test_r1, best_test_r10, best_test_r20, best_test_r30, best_test_r40,
                             best_test_r50) = utils.evaluate_qi(model, dl_query, dl_gallery)
         else:
-            best_test_nmi, (best_test_r1, best_test_r2, best_test_r4, best_test_r8, best_test_r16, best_test_r32), best_test_auroc = utils.evaluate(model, dl_ev,
-                                                                                                     args.eval_nmi,
-                                                                                                     args.recall)
+            best_test_nmi, (best_test_r1, best_test_r2, best_test_r4, best_test_r8, best_test_r16,
+                            best_test_r32), best_test_auroc = utils.evaluate(model, dl_val,
+                                                                             args.eval_nmi,
+                                                                             args.recall)
+            # best_test_nmi, (best_test_r1, best_test_r2, best_test_r4, best_test_r8, best_test_r16, best_test_r32), best_test_auroc = utils.evaluate(model, dl_ev,
+            #                                                                                          args.eval_nmi,
+            #                                                                                          args.recall)
         # logging.info('Best test r8: %s', str(best_test_r8))
     if 'inshop' in args.dataset:
         results['NMI'] = best_test_nmi
