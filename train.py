@@ -141,7 +141,7 @@ else:
 
 out_results_fn = f'log/res_{args.dataset}_{curr_fn}_{args.mode}_{xname}{args.nb_epochs}ep_{args.sz_embedding}_bs{args.sz_batch}_nc{config["num_class_per_batch"]}_baseLR{config["opt"]["args"]["base"]["lr"]}_pncaLR{config["opt"]["args"]["proxynca"]["lr"]}.txt'
 
-args.log_filename = f'log/{args.dataset}_{curr_fn}_{args.mode}_{xname}{args.nb_epochs}ep_{args.sz_embedding}_bs{args.sz_batch}_nc{config["num_class_per_batch"]}_baseLR{config["opt"]["args"]["base"]["lr"]}_pncaLR{config["opt"]["args"]["proxynca"]["lr"]}'
+args.log_filename = f'{args.dataset}_{curr_fn}_{args.mode}_{xname}{args.nb_epochs}ep_{args.sz_embedding}_bs{args.sz_batch}_nc{config["num_class_per_batch"]}_baseLR{config["opt"]["args"]["base"]["lr"]}_pncaLR{config["opt"]["args"]["proxynca"]["lr"]}'
 
 # out_results_fn = f'log/{args.dataset}_{curr_fn}_{args.mode}_{args.xname}_{args.sz_embedding}_bs{args.sz_batch}_nc{config["num_class_per_batch"]}_baseLR{config["opt"]["args"]["base"]["lr"]}_pncaLR{config["opt"]["args"]["proxynca"]["lr"]}.txt' % (,
 #                                                        curr_fn,
